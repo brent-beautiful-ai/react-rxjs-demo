@@ -1,11 +1,39 @@
-import { BehaviorSubject } from "rxjs";
-import { map } from "rxjs/operators";
+import { BehaviorSubject } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { currentUser$ } from './users.store';
 
-const _votes$ = new BehaviorSubject([
+const votes = [
   {
-    userId: "Brent",
-    vote: "blue"
+    username: 'Brent',
+    color: 'blue'
   }
-]);
+];
+const _votes$ = new BehaviorSubject(votes);
 export const votes$ = _votes$.asObservable();
-export const voteTally$ = votes$.pipe();
+
+export const voteTally$ = votes$.pipe(
+  map(votes => votes
+    .reduce((tally, vote) => {
+      const { color } = vote;
+      ++tally[color];
+      return tally;
+    }, {
+      'blue': 0,
+      'red': 0,
+      'limegreen': 0,
+      'purple': 0,
+    })
+  ),
+);
+
+export const castVoteForColor = (color) => {
+  currentUser$.pipe(
+    take(1),
+  ).subscribe((user) => {
+    votes.push({
+      username: user.username,
+      color,
+    });
+    _votes$.next(votes);
+  })
+}
