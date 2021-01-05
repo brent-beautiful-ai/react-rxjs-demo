@@ -2,6 +2,7 @@ import { React, Component } from 'react';
 import { castVoteForColor } from '../store/votes.store';
 
 export class TallyCounter extends Component {
+
 	render() {
 		const {
 			color,
@@ -11,7 +12,9 @@ export class TallyCounter extends Component {
 		return (
 			<div
 				className="tally-counter"
-				style={{background: color}}
+				style={{
+					background: color,
+				}}
 				onClick={() => castVoteForColor(color)}
 			>{count}</div>
 		)

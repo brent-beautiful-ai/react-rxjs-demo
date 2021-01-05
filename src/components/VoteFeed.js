@@ -27,8 +27,10 @@ export class VoteFeed extends Component {
 			votes
         } = this.state;
         
+        let count = 0;
         let listVotes;
         if (votes) {
+            count = votes.length;
             let index = 0;
             listVotes = votes.map(vote => {
                 return (
@@ -38,12 +40,15 @@ export class VoteFeed extends Component {
         }
 		
 		return (
-			<div
-                ref={this.ref}
-				className="vote-feed"
-            >
-                {listVotes}
-                <div style={{height: '6em'}}></div>
+            <div className="vote-feed">
+                <div className="vote-count">{count} Votes</div>
+                <div
+                    ref={this.ref}
+                    className="vote-list"
+                >
+                    {listVotes}
+                    <div style={{height: '6em'}}></div>
+                </div>
             </div>
 		)
 	}

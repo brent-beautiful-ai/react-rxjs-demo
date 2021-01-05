@@ -1,11 +1,14 @@
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { currentUser$ } from './users.store';
-import { db } from './firebase.store';
 
-const refVotes = db.ref('rxjs-demo/votes');
-
-const _votes$ = new ReplaySubject();
+const votes = [
+  {
+    username: 'Brent',
+    color: 'blue'
+  }
+];
+const _votes$ = new BehaviorSubject(votes);
 export const votes$ = _votes$.asObservable();
 
 export const voteTally$ = votes$.pipe(
@@ -23,18 +26,6 @@ export const voteTally$ = votes$.pipe(
   ),
 );
 
-refVotes.on('value', (res) => {
-  const data = res.val();
-  let votes = [];
-  if (data) {
-    votes = Object.values(data)
-      .sort((a, b) => a.timestamp < b.timestamp ? -1 : 1)
-    ;
-  }
-  console.log('Votes', votes);
-  _votes$.next(votes);
-});
-
 export const canVote$ = currentUser$.pipe(
   map(user => !!user && !!user.username),
 );
@@ -43,14 +34,15 @@ export const castVoteForColor = (color) => {
   currentUser$.pipe(
     take(1),
   ).subscribe((user) => {
-    refVotes.push().set({
-      timestamp: Date.now(),
+    votes.push({
       username: user.username,
       color,
     });
+    _votes$.next(votes);
   })
 }
 
 export const clearVotes = () => {
-  refVotes.set({});
+  votes = [];
+  _votes$.next(votes);
 }
