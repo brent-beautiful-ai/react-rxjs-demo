@@ -38,6 +38,7 @@ h1, p {
   font-weight: 600;
   font-size: 1em;
   outline: none;
+  user-select: none;
   cursor: pointer;
 }
 .btn-wide:hover {
@@ -53,7 +54,7 @@ h1, p {
 }
 
 .tally-grid {
-  font-size: 6vw;
+  font-size: 5vw;
   display: grid;
   grid-template-columns: 50% 50%;
   justify-items: center;
@@ -96,6 +97,8 @@ h1, p {
   align-items: center;
   height: 2em;
   padding: 0.5em;
+  background-color: #333;
+  color: #eee;
 }
 
 .vote-list {
@@ -106,6 +109,7 @@ h1, p {
   right: 0;
   padding: 0 0.5em;
   overflow-y: scroll;
+  background-color: #ddd;
 }
 
 .vote-item {

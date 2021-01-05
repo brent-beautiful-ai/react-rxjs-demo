@@ -7,6 +7,9 @@ const refVotes = db.ref('rxjs-demo/votes');
 
 const _votes$ = new ReplaySubject();
 export const votes$ = _votes$.asObservable();
+export const voteCount$ = votes$.pipe(
+  map(votes => votes.length)
+);
 
 export const voteTally$ = votes$.pipe(
   map(votes => votes

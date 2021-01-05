@@ -4,8 +4,9 @@ import { currentUser$ } from './users.store';
 
 const votes = [
   {
+    timestamp: Date.now(),
     username: 'Brent',
-    color: 'blue'
+    color: 'blue',
   }
 ];
 const _votes$ = new BehaviorSubject(votes);

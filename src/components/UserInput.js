@@ -1,28 +1,13 @@
 import { React, Component, Fragment } from 'react';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { reactive } from 'rxjs-react';
 import { currentUser$, updateCurrentUser } from '../store/users.store';
 
 export class UserInput extends Component {
-  state = {};
-
-  subs = new Subscription();
-  
-  componentDidMount() {
-    this.subs.add(currentUser$.subscribe(user => this.setState({user})));
-  }
-
-  componentWillUnmount() {
-    this.subs.unsubscribe();
-  }
-  
-  render() {
-    const {
-      user
-    } = this.state;
-
-    let userInput;
-    if (user) {
-      userInput = (
+  userInput$ = currentUser$.pipe(
+    map(user => {
+      return (
         <input
           type="text"
           placeholder="Username..."
@@ -33,12 +18,14 @@ export class UserInput extends Component {
             });
           }}
         />
-      )
-    }
-
-    return (
+      );
+    })
+  );
+  
+  render() {
+    return reactive(
       <div className="user-input">
-        {userInput}
+        {this.userInput$}
       </div>
     )
   }

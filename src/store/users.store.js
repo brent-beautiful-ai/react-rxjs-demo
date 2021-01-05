@@ -6,7 +6,7 @@ const currentUser = {
 };
 const _currentUser$ = new BehaviorSubject(currentUser);
 export const currentUser$ = _currentUser$.asObservable().pipe(
-  debounceTime(500),
+  debounceTime(300),
   shareReplay(1),
 );
 
